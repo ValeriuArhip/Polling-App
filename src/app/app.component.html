@@ -1,0 +1,64 @@
+<!-- vh means view height. The screen you are currently looking at. -->
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class='h2' style="padding: 7vh">
+        Sir Vote-a-lot
+      </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4"  style="height: 70vh !important">
+    <form name="f" id="f">
+        <fieldset class="form-group">
+            <input type="text" class="form-control" maxlength="80" [(ngModel)]="question" name="question" #q placeholder="Enter you question here...">
+        </fieldset>
+        <fieldset class="form-group" *ngFor="let op of options; let i = index">
+          <div class="input-group">
+              <input type="text"  maxlength="80" class="form-control" value="{{op}}">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" (click)="onDelete(i)">x</button>
+              </span>
+            </div>
+        </fieldset>
+        <fieldset  *ngIf="optionsCount!=10" class="form-group">
+            <div class="input-group">
+            <input [(ngModel)]="option" name="option"  type="text" class="form-control" #opt>
+            <span class="input-group-btn">
+            <button class="btn btn-primary" (click)="onAdd()">Add</button>
+          </span>
+          </div>
+        </fieldset>
+    </form>
+    <p style="margin-top: 11vh">
+      {{optionsCount}}/10 possible answers <button class="btn btn-primary pull-right" type="reset" (click)="resetFullUI()" form="f">Reset</button>
+    </p>
+    </div>
+    <div *ngIf="options.length >= 2" class="col-md-4" style="height: 70vh !important">
+      <h4 class="h4">
+          {{question}}
+      </h4>
+      <fieldset class="form-group" *ngFor="let op of options; let i = index">
+        <input  type='radio' [value]="i" [(ngModel)]="vote_id" name="vote"> {{op}}
+      </fieldset>
+
+      <p style="margin-top: 11vh">
+         <button class="btn btn-primary pull-right" *ngIf="optionsCount!=0" (click)="vote()" type="button">Vote</button>
+      </p>
+    </div>
+    <div *ngIf="options.length >= 2" class="col-md-4">
+      <p>{{question}}</p>
+      <div  style="display: block" *ngIf="barChartData.length>0">
+        <canvas baseChart
+                class="chart"
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [legend]="barChartLegend"
+                [chartType]="barChartType"
+                [colors]="COLORS_TO_CHOOSE_FROM"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
